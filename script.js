@@ -3,9 +3,34 @@ document.documentElement.classList.add('js');
 const bookingForm = document.querySelector('#booking-form');
 const formMessage = document.querySelector('#form-message');
 const yearNode = document.querySelector('#year');
+const menuToggle = document.querySelector('#menu-toggle');
+const siteHeader = document.querySelector('.site-header');
+const menuLinks = document.querySelectorAll('#main-nav a');
 
 if (yearNode) {
   yearNode.textContent = new Date().getFullYear();
+}
+
+if (menuToggle && siteHeader) {
+  menuToggle.addEventListener('click', () => {
+    const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', String(!isExpanded));
+    siteHeader.classList.toggle('menu-open', !isExpanded);
+  });
+
+  menuLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      menuToggle.setAttribute('aria-expanded', 'false');
+      siteHeader.classList.remove('menu-open');
+    });
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 960) {
+      menuToggle.setAttribute('aria-expanded', 'false');
+      siteHeader.classList.remove('menu-open');
+    }
+  });
 }
 
 if (bookingForm && formMessage) {
